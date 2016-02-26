@@ -19,7 +19,7 @@ public class Starter {
             return;
         }
         new Game();
-        new StateMachine("/theme");        
+        //new StateMachine("/theme");
     }
 
     public void stop() {
