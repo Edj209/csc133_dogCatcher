@@ -80,28 +80,32 @@ public class GameWorld extends Form{
         this.totalScore = 0;
 
         //creates dogs
-        for(int i=0; i<2; i++){
+        for(int i=0; i<3; i++){
             Point2D.Float objLocation = new Point2D.Float(randomNum.nextInt(1000),randomNum.nextInt(610));
             Dogs dog = new Dogs();
             dog.setSize(randInt(20, 50));
             dog.setObjLocation(objLocation);
+            dog.initialColor();
 
 
             GameObjects.add(dog);
         }
         //creates cats
-        for(int i=0; i<1; i++){
+        for(int i=0; i<2; i++){
             Point2D.Float objLocation = new Point2D.Float(randomNum.nextInt(1000),randomNum.nextInt(610));
             Cats cat = new Cats();
             cat.setSize(randInt(20, 50));
             cat.setObjLocation(objLocation);
+            cat.initialColor();
 
             GameObjects.add(cat);
         }
         //creates net
         Nets net = new Nets();
         Point2D.Float objLocation = new Point2D.Float(randomNum.nextInt(1000),randomNum.nextInt(610));
+        net.setObjLocation(objLocation);
         net.setSize(100);
+        net.initialColor();
 
         GameObjects.add(net);
     }
@@ -224,6 +228,7 @@ public class GameWorld extends Form{
                     Cats kitty = new Cats();
                     kitty.setSize(randInt(20, 50));
                     kitty.setObjLocation(objLocation);
+                    kitty.initialColor();
 
                     GameObjects.add(kitty);
                     break;
@@ -273,8 +278,11 @@ public class GameWorld extends Form{
         for(GameObject item : GameObjects) {
             if (item instanceof GameObject) {
                 System.out.println(((GameObject) item).toString());
+
             }
+
         }
+        System.out.println();
     }
 
     public void quit() {

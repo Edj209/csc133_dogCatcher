@@ -9,8 +9,8 @@ import java.util.Random;
  * Created by Edgar on 2/23/2016.
  */
 public class Dogs extends Animals{
-    ColorUtil color;
-    Random randomNum;
+    ColorUtil color = new ColorUtil();
+    Random randomNum = new Random();
 
     public int getScratches() {
         return scratches;
@@ -26,6 +26,7 @@ public class Dogs extends Animals{
     public Dogs() {
         speed = 5;
         scratches = 0;
+        direction = randomNum.nextInt(360);
     }
 
     //color of dog may change

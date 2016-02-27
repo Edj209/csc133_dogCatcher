@@ -38,7 +38,7 @@ public abstract class GameObject {
     }
 
     private Point2D.Float objLocation;
-    private ColorUtil color;
+    private ColorUtil color = new ColorUtil();
     public abstract void changeColor();
     private int size;
 
