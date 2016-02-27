@@ -50,4 +50,11 @@ public class Nets extends Catchers{
     public void changeColor() {
 
     }
+
+    public String toString(){
+        System.out.print("Net: ");
+        String parentDesc = super.toString();
+        String myDesc = " size=" + this.getSize();
+        return parentDesc + myDesc;
+    }
 }

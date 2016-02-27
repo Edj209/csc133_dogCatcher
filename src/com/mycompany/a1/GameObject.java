@@ -51,6 +51,10 @@ public abstract class GameObject {
         color.rgb(randomR, randomG, randomB);
     }
 
+    public String toString(){
+        return "location=" + this.objLocation + " color=" + this.color;
+    }
+
 
 
 

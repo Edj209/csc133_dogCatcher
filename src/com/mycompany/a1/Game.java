@@ -5,6 +5,7 @@ import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.sun.glass.ui.SystemClipboard;
 
 /**
  * Created by Edgar on 2/23/2016.
@@ -79,6 +80,7 @@ public class Game extends Form{
                         gw.quit();
                         break;
                     default:
+                        System.out.println("\n\n please enter valid input\n\n");
 
                         break;
 

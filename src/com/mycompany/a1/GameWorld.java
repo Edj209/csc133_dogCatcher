@@ -1,7 +1,13 @@
 package com.mycompany.a1;
 
+import com.codename1.ui.Form;
+import com.codename1.ui.Label;
+import com.codename1.ui.TextField;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.mycompany.a1.gameObjects.Cats;
 import com.mycompany.a1.gameObjects.Dogs;
+import com.mycompany.a1.gameObjects.IMoving;
 import com.mycompany.a1.gameObjects.Nets;
 import sun.nio.ch.Net;
 
@@ -14,17 +20,64 @@ import java.util.Set;
 /**
  * Created by Edgar on 2/23/2016.
  */
-public class GameWorld {
+public class GameWorld extends Form{
     ArrayList<GameObject> GameObjects = new ArrayList();
     Random randomNum = new Random();
-    private int dogsCaptured = 0;
-    private int catsCaptured = 0;
-    private int dogsRemaining = 0;
-    private int catsRemaining = 2;
-    private int totalScore = 0;
+    private int dogsCaptured;
+
+    public int getDogsCaptured() {
+        return dogsCaptured;
+    }
+
+    public void setDogsCaptured(int dogsCaptured) {
+        this.dogsCaptured = dogsCaptured;
+    }
+
+    public int getCatsCaptured() {
+        return catsCaptured;
+    }
+
+    public void setCatsCaptured(int catsCaptured) {
+        this.catsCaptured = catsCaptured;
+    }
+
+    public int getDogsRemaining() {
+        return dogsRemaining;
+    }
+
+    public void setDogsRemaining(int dogsRemaining) {
+        this.dogsRemaining = dogsRemaining;
+    }
+
+    public int getCatsRemaining() {
+        return catsRemaining;
+    }
+
+    public void setCatsRemaining(int catsRemaining) {
+        this.catsRemaining = catsRemaining;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    private int catsCaptured;
+    private int dogsRemaining;
+    private int catsRemaining;
+    private int totalScore;
 
     //generates the world, adding dogs cats and nets
     public void initLayout() {
+
+        this.dogsCaptured = 0;
+        this.catsCaptured = 0;
+        this.dogsRemaining = 3;
+        this.catsRemaining = 2;
+        this.totalScore = 0;
 
         //creates dogs
         for(int i=0; i<2; i++){
@@ -32,6 +85,7 @@ public class GameWorld {
             Dogs dog = new Dogs();
             dog.setSize(randInt(20, 50));
             dog.setObjLocation(objLocation);
+
 
             GameObjects.add(dog);
         }
@@ -172,21 +226,84 @@ public class GameWorld {
                     kitty.setObjLocation(objLocation);
 
                     GameObjects.add(kitty);
+                    break;
                 }
             }
         }
 
     }
 
-    public void catDogFight() {}
+    public void catDogFight() {
+        Set<Cats> uniqueCats = new HashSet<Cats>();
+        for(GameObject cat : GameObjects){
+            if(cat instanceof Cats){
+                Cats uniqueCat = (Cats) cat;
+                uniqueCats.add(uniqueCat);
+            }
+        }
+        int uniqueItemCounter = uniqueCats.size();
+        if(uniqueItemCounter > 0) {
+            for(GameObject dog : GameObjects) {
+                if (dog instanceof Dogs) {
+                    ((Dogs) dog).scratched();
+                    dog.changeColor();
+                    break;
+                }
+            }
+        }
+    }
 
-    public void tick() {}
+    public void tick() {
+        for(GameObject gameObject : GameObjects){
+            if(gameObject instanceof IMoving) {
+                ((IMoving) gameObject).move();
+            }
+        }
+    }
 
-    public void points() {}
+    public void points() {
+        System.out.println("\n\nCurrent Score: " + this.totalScore + "\n");
+        System.out.println("Dogs Captured: " + this.dogsCaptured);
+        System.out.println("Cats Captured: " + this.catsCaptured + "\n");
+        System.out.println("Dogs Remaining: " + this.dogsRemaining);
+        System.out.println("Cats Remaining: " + this.catsRemaining + "\n\n");
+    }
 
-    public void map() {}
+    public void map() {
+        for(GameObject item : GameObjects) {
+            if (item instanceof GameObject) {
+                System.out.println(((GameObject) item).toString());
+            }
+        }
+    }
 
-    public void quit() {}
+    public void quit() {
+        Label myLabel = new Label("Are you sure you want to quit?");
+        this.addComponent(myLabel);
+        final TextField myTextField = new TextField();
+        this.addComponent(myTextField);
+        this.show();
+
+        myTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                String sCommand = myTextField.getText().toString();
+                myTextField.clear();
+
+                //switch statement to handle the user input
+                switch (sCommand.charAt(0)) {
+                    case 'y':
+                        System.exit(0);
+                        break;
+                    case 'n':
+                        break;
+                    default:
+                        System.out.println("\nPlease enter either y or n\n");
+                        break;
+                }
+            }
+        });
+    }
 
     public static int randInt(int min, int max) {
         Random rand = new Random();
