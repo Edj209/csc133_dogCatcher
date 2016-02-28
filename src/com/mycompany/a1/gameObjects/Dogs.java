@@ -73,7 +73,7 @@ public class Dogs extends Animals{
     public String toString(){
         System.out.print("Dog: ");
         String parentDesc = super.toString();
-        String myDesc = " direction=" + this.direction + " speed=" + this.speed + " size=" + this.getSize();
+        String myDesc = " direction=" + this.direction + " speed=" + this.speed + " size=" + this.getSize() + " scratches= " + this.scratches;
         return parentDesc + myDesc;
     }
 }

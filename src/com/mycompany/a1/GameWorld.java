@@ -1,5 +1,6 @@
 package com.mycompany.a1;
 
+import com.codename1.ui.Component;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
@@ -12,10 +13,7 @@ import com.mycompany.a1.gameObjects.Nets;
 import sun.nio.ch.Net;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Edgar on 2/23/2016.
@@ -72,6 +70,7 @@ public class GameWorld extends Form{
 
     //generates the world, adding dogs cats and nets
     public void initLayout() {
+
 
         this.dogsCaptured = 0;
         this.catsCaptured = 0;
@@ -134,21 +133,56 @@ public class GameWorld extends Form{
 
     //scoops up all the animals in the net
     public void scoop() {
-        for(GameObject catDog : GameObjects){
-            if(catDog instanceof Cats) {
-                catsCaptured++;
-                catsRemaining--;
-                totalScore = totalScore - 10;
-                GameObjects.remove(catDog);
+        Point2D.Float netObjLocation = new Point2D.Float();
+
+        //gets the net location
+        for (GameObject item : GameObjects) {
+            if (item instanceof Nets) {
+                netObjLocation = item.getObjLocation();
             }
-            if(catDog instanceof Dogs){
-                dogsCaptured++;
-                dogsRemaining--;
-                totalScore = (totalScore + 10 - ((Dogs) catDog).getScratches());
-                GameObjects.remove(catDog);
+        }
+
+        Iterator<GameObject> iter = GameObjects.listIterator();
+
+        while (iter.hasNext()) {
+            GameObject object = iter.next();
+
+            if (object.getObjLocation().equals(netObjLocation)) {
+                //if a cat is in the net delete it
+                if (object instanceof Cats) {
+                    catsCaptured++;
+                    catsRemaining--;
+                    totalScore = totalScore - 10;
+                    iter.remove();
+
+                } else if (object instanceof Dogs) {
+                    dogsCaptured++;
+                    dogsRemaining--;
+                    totalScore = (totalScore + 10 - ((Dogs) object).getScratches());
+                    iter.remove();
+                }
             }
         }
     }
+
+//            while (iterator().hasNext()){
+//                GameObject object = iter.next();
+//
+//                if(object instanceof Cats){
+//                    catsCaptured++;
+//                    catsRemaining--;
+//                    totalScore = totalScore - 10;
+//                    GameObjects.remove(object);
+//                }
+//            }
+//            if(catDog instanceof Dogs){
+//                dogsCaptured++;
+//                dogsRemaining--;
+//                totalScore = (totalScore + 10 - ((Dogs) catDog).getScratches());
+//                GameObjects.remove(catDog);
+//            }
+//        }
+
 
     //next 6 methods concern the movement of the net by the player
     public void right() {
@@ -197,6 +231,14 @@ public class GameWorld extends Form{
     }
 
     public void netToRandomCat() {
+        Set<Cats> uniqueCats = new HashSet<Cats>();
+        for (GameObject cat : GameObjects) {
+            if (cat instanceof Cats) {
+                Cats uniqueCat = (Cats) cat;
+                uniqueCats.add(uniqueCat);
+            }
+        }
+
         for (GameObject catLocation : GameObjects) {
             if (catLocation instanceof Cats) {
                 Point2D.Float objLocation = catLocation.getObjLocation();
@@ -206,9 +248,10 @@ public class GameWorld extends Form{
                     }
                 }
             }
-            else {
-                System.out.println("There are no more cats left.");
-            }
+
+        }
+        if (uniqueCats.size() <= 0) {
+            System.out.println("There are no more cats left.");
         }
     }
 
@@ -263,6 +306,10 @@ public class GameWorld extends Form{
             if(gameObject instanceof IMoving) {
                 ((IMoving) gameObject).move();
             }
+        }
+        if (dogsRemaining <=0) {
+            System.out.println("Game Over, all dogs captured.");
+            System.exit(0);
         }
     }
 
