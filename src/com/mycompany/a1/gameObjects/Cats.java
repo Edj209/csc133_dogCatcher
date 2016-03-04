@@ -1,7 +1,9 @@
 package com.mycompany.a1.gameObjects;
 
-import java.awt.geom.Point2D;
 import java.util.Random;
+
+import com.codename1.ui.geom.Point2D;
+
 
 /**
  * Created by Edgar on 2/23/2016.
@@ -29,12 +31,19 @@ public class Cats extends Animals {
         int theta = 90 - direction;
         Math.toRadians((double)theta);
         //update new location
-        Point2D.Float newLocation = new Point2D.Float();
-        newLocation.x = getObjLocation().x + ((float) Math.cos(theta) * speed);
-        newLocation.y = getObjLocation().y + ((float) Math.sin(theta) * speed);
-        setObjLocation(newLocation);
+        Point2D newLocation = new Point2D(0, 0);
+        newLocation.setX(getObjLocation().getX() + ((double) Math.cos(theta)) * speed);
+        newLocation.setY(getObjLocation().getY() + ((double) Math.sin(theta)) * speed);
+        
+        this.setObjLocation((com.codename1.ui.geom.Point2D) newLocation);
+        
+//        Point2D newLocation;
+//        newLocation.setLocation(getObjLocation().x + ((float) Math.cos(theta) * speed, getObjLocation().y + ((float) Math.sin(theta) * speed);
+//        newLocation.y = getObjLocation().y + ((float) Math.sin(theta) * speed);
+//        setObjLocation(newLocation);
 
     }
+    
     public static int randInt(int min, int max) {
         Random rand = new Random();
 

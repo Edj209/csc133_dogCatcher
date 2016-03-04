@@ -1,10 +1,9 @@
 package com.mycompany.a1;
 
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.Random;
 
 import com.codename1.charts.util.ColorUtil;
+import com.codename1.ui.geom.Point2D;
 
 /**
  * Created by Edgar on 2/23/2016.
@@ -29,16 +28,20 @@ public abstract class GameObject {
         this.color = color;
     }
 
-    public Point2D.Float getObjLocation() {
-        return objLocation;
-    }
+    
 
-    public void setObjLocation(Point2D.Float objLocation) {
-        this.objLocation = objLocation;
-    }
+    private Point2D objLocation;
+    public Point2D getObjLocation() {
+		return objLocation;
+	}
 
-    private Point2D.Float objLocation;
-    private ColorUtil color = new ColorUtil();
+	public void setObjLocation(Point2D objLocation) {
+		this.objLocation = objLocation;
+	}
+
+
+
+	private ColorUtil color = new ColorUtil();
     public abstract void changeColor();
     private int size;
 

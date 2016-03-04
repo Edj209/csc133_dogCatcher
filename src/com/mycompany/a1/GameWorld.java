@@ -1,19 +1,22 @@
 package com.mycompany.a1;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Set;
+
 import com.codename1.ui.Component;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.geom.Point2D;
 import com.mycompany.a1.gameObjects.Cats;
 import com.mycompany.a1.gameObjects.Dogs;
 import com.mycompany.a1.gameObjects.IMoving;
 import com.mycompany.a1.gameObjects.Nets;
-import sun.nio.ch.Net;
-
-import java.awt.geom.Point2D;
-import java.util.*;
 
 /**
  * Created by Edgar on 2/23/2016.
@@ -75,15 +78,15 @@ public class GameWorld extends Form{
         this.dogsCaptured = 0;
         this.catsCaptured = 0;
         this.dogsRemaining = 3;
-        this.catsRemaining = 2;
+        this.catsRemaining = 0;
         this.totalScore = 0;
 
         //creates dogs
         for(int i=0; i<3; i++){
-            Point2D.Float objLocation = new Point2D.Float(randomNum.nextInt(1000),randomNum.nextInt(610));
+            Point2D objLocation2 = new Point2D(randomNum.nextInt(1000),randomNum.nextInt(610));
             Dogs dog = new Dogs();
             dog.setSize(randInt(20, 50));
-            dog.setObjLocation(objLocation);
+            dog.setObjLocation(objLocation2);
             dog.initialColor();
 
 
@@ -91,17 +94,18 @@ public class GameWorld extends Form{
         }
         //creates cats
         for(int i=0; i<2; i++){
-            Point2D.Float objLocation = new Point2D.Float(randomNum.nextInt(1000),randomNum.nextInt(610));
+            Point2D objLocation = new Point2D(randomNum.nextInt(1000),randomNum.nextInt(610));
             Cats cat = new Cats();
             cat.setSize(randInt(20, 50));
             cat.setObjLocation(objLocation);
             cat.initialColor();
 
             GameObjects.add(cat);
+            catsRemaining++;
         }
         //creates net
         Nets net = new Nets();
-        Point2D.Float objLocation = new Point2D.Float(randomNum.nextInt(1000),randomNum.nextInt(610));
+        Point2D objLocation = new Point2D(randomNum.nextInt(1000),randomNum.nextInt(610));
         net.setObjLocation(objLocation);
         net.setSize(100);
         net.initialColor();
@@ -133,7 +137,7 @@ public class GameWorld extends Form{
 
     //scoops up all the animals in the net
     public void scoop() {
-        Point2D.Float netObjLocation = new Point2D.Float();
+        Point2D netObjLocation = new Point2D(0, 0);
 
         //gets the net location
         for (GameObject item : GameObjects) {
@@ -151,9 +155,11 @@ public class GameWorld extends Form{
                 //if a cat is in the net delete it
                 if (object instanceof Cats) {
                     catsCaptured++;
-                    catsRemaining--;
+                    if(catsRemaining > 0)	
+                    	catsRemaining--;
                     totalScore = totalScore - 10;
                     iter.remove();
+                    
 
                 } else if (object instanceof Dogs) {
                     dogsCaptured++;
@@ -220,7 +226,7 @@ public class GameWorld extends Form{
     public void netToRandomDog() {
         for (GameObject dogLocation : GameObjects) {
             if (dogLocation instanceof Dogs) {
-                Point2D.Float objLocation = dogLocation.getObjLocation();
+                Point2D objLocation = dogLocation.getObjLocation();
                 for (GameObject net : GameObjects) {
                     if (net instanceof Nets) {
                         ((Nets) net).jumpToRandomDog(objLocation);
@@ -241,7 +247,7 @@ public class GameWorld extends Form{
 
         for (GameObject catLocation : GameObjects) {
             if (catLocation instanceof Cats) {
-                Point2D.Float objLocation = catLocation.getObjLocation();
+                Point2D objLocation = catLocation.getObjLocation();
                 for (GameObject net : GameObjects) {
                     if (net instanceof Nets) {
                         ((Nets) net).jumpToRandomCat(objLocation);
@@ -267,13 +273,14 @@ public class GameWorld extends Form{
         if(uniqueItemCounter >= 2){
             for(GameObject cat : GameObjects){
                 if(cat instanceof Cats){
-                    Point2D.Float objLocation = new Point2D.Float((float) cat.getObjLocation().getX()+5, (float) cat.getObjLocation().getY()+5);
+                    Point2D objLocation = new Point2D((float) cat.getObjLocation().getX()+5, (float) cat.getObjLocation().getY()+5);
                     Cats kitty = new Cats();
                     kitty.setSize(randInt(20, 50));
                     kitty.setObjLocation(objLocation);
                     kitty.initialColor();
 
                     GameObjects.add(kitty);
+                    catsRemaining++;
                     break;
                 }
             }
